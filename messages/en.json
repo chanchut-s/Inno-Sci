@@ -1,9 +1,14 @@
 {
   "HomePage": {
-    "title": "Hello world!"
-  },
-  "cardProfile": {
-    "name": "Chanchut Savangpunt"
+    "aboutInno": "About Inno Sci",
+    "ourServices": "Services",
+    "news": "News",
+    "events": "Events",
+    "partner": "Partner",
+    "vision": "Vision",
+    "history": "History",
+    "goals": "Goals",
+    "viewAll": "ViewAll"
   },
   "Lecturer": {
     "title": "Lecturer"
@@ -20,6 +25,40 @@
     "event": "Event",
     "news": "News",
     "news1": "News",
-    "contact": "Contact us"
+    "contact": "Contact us",
+    "upevent": "Upcoming Events",
+    "passevent": "Past Events",
+    "service": "Services"
+  },
+  "Event": {
+    "home": "Home",
+    "upevent": "Upcoming Events",
+    "passevent": "Past Events",
+    "placeholder": "Search events..."
+  },
+  "News": {
+    "home": "Home",
+    "news": "News",
+    "placeholder": "Search news..."
+  },
+  "Partner": {
+    "home": "Home",
+    "partner": "Partners"
+  },
+  "months": {
+    "all": "All months",
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+    "search": "Search"
   }
 }

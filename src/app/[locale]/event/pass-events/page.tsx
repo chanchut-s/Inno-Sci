@@ -1,11 +1,11 @@
-import React from 'react'
-import Heading from '@/app/components/custom/Heading'
+import React from 'react';
+import Heading from '@/app/components/custom/Heading';
 import CardBlogNews from '@/app/components/ui/CardBlogNews';
 import { PaginationComponent } from '@/app/components/custom/Pagination';
 import { getTranslations } from 'next-intl/server';
 import SearchComponent from '@/app/components/custom/Search';
 import { notFound } from 'next/navigation';
-import { getNewsPublicitiesData } from '@/app/api/strapi';
+import { getNewsEventData } from '@/app/api/strapi';
 import DateRangeSearch from '@/app/components/custom/DateRangeSearch';
 import { Metadata } from 'next';
 
@@ -21,10 +21,10 @@ interface NewsData {
       data: {
         attributes: {
           url: string;
-        }
-      }
-    }
-  }
+        };
+      };
+    };
+  };
 }
 
 interface SearchParamsProps {
@@ -37,33 +37,32 @@ interface SearchParamsProps {
 }
 
 export const metadata: Metadata = {
-  title: "ข่าวประชาสัมพันธ์",
-  description: "ข่าวประชาสัมพันธ์"
+  title: "กิจกรรมที่ผ่านไปแล้ว",
+  description: "กิจกรรมที่ผ่านไปแล้ว"
 }
 
-export default async function NewsPage({
+export default async function PastEventsPage({
   params: { locale },
-  searchParams
+  searchParams,
 }: {
   params: { locale: string };
   searchParams: SearchParamsProps['searchParams'];
 }) {
-  const t = await getTranslations('News');
-  const query = searchParams?.query ?? "";
+  const t = await getTranslations('Event');
+  const query = searchParams?.query ?? '';
   const currentPage = Number(searchParams?.page) || 1;
   const pageSize = 9;
-  const startDate = searchParams?.startDate ?? "";
-  const endDate = searchParams?.endDate ?? "";
+  const startDate = searchParams?.startDate ?? '';
+  const endDate = searchParams?.endDate ?? '';
 
   let data, meta, error, pageCount;
   try {
-    // ส่งข้อมูล startDate และ endDate ไปยัง API
-    const result = await getNewsPublicitiesData(query, currentPage, pageSize, startDate, endDate);
+    const result = await getNewsEventData(query, currentPage, pageSize, startDate, endDate);
     data = result.data;
     meta = result.meta;
     pageCount = meta?.pagination?.pageCount || 1;
   } catch (e) {
-    console.error('Error fetching news data:', e);
+    console.error('Error fetching event data:', e);
     error = e instanceof Error ? e.message : 'An unknown error occurred';
   }
 
@@ -81,8 +80,8 @@ export default async function NewsPage({
   if (!data) return notFound();
 
   const now = new Date();
-  // กรองข้อมูลข่าวสารตามวันที่เริ่มต้น
-  const filteredData = data.filter((news: NewsData) => new Date(news.attributes.start) <= now);
+  // Filter for past events
+  const pastEvents = data.filter((event: NewsData) => new Date(event.attributes.end) < now);
 
   return (
     <div className='bg-gray-100'>
@@ -90,26 +89,29 @@ export default async function NewsPage({
         <div className="w-full max-w-screen-xl mx-3 sm:mx-10 lg:mx-[4rem]">
           <div className="breadcrumbs text-sm text-white">
             <ul>
-              <li><a href={`/${locale}`}>{t("home")}</a></li>
-              <li>{t("news")}</li>
+              <li><a href={`/${locale}`}>{t('home')}</a></li>
+              <li>{t('passevent')}</li>
             </ul>
           </div>
         </div>
       </div>
 
       <Heading imgUrl='https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' />
+
       <div className='flex justify-center items-center mx-3 sm:mx-10 lg:mx-[4rem] -mt-[4rem] lg:-mt-[7rem] pb-5'>
         <div className='bg-white relative w-full max-w-screen-xl shadow-xl'>
           <div className='p-[1rem] md:p-[2rem] space-y-4 md:space-y-8'>
-            <div className='flex flex-col  gap-4 justify-between'>
-              <h1 className='text-3xl sm:text-4xl lg:text-5xl text-blue-900'>{t("news")}</h1>
+            <div className='flex flex-col gap-4 justify-between'>
+              <h1 className='text-3xl sm:text-4xl lg:text-5xl text-blue-900'>{t('passevent')}</h1>
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <SearchComponent initialQuery={query} placeholder={t("placeholder")} />
                 <DateRangeSearch startDate={startDate} endDate={endDate} />
               </div>
             </div>
+
+            {/* Past events */}
             <div className='grid grid-cols-1 gap-8 md:gap-14 md:grid-cols-2 lg:grid-cols-3'>
-              {filteredData.map((news: NewsData) => (
+              {pastEvents.map((news: NewsData) => (
                 <CardBlogNews
                   key={news.id}
                   id={news.id}
@@ -117,12 +119,13 @@ export default async function NewsPage({
                   thumbnailUrl={news.attributes.thumbnail.data?.attributes?.url}
                   start={news.attributes.start}
                   end={news.attributes.end}
-                  pageType="news"
+                  pageType="event"
                   slug={news.attributes.slug}
                 />
               ))}
             </div>
           </div>
+
           <div className="flex justify-center mb-8">
             <PaginationComponent pageCount={pageCount ?? 1} startDate={startDate} endDate={endDate} />
           </div>

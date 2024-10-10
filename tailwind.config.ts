@@ -24,6 +24,9 @@ const config: Config = {
         'md-custom2': '500px'
       },
     },
+    daisyui: {
+      themes: ["light", "dark", "cupcake"],
+    },
   },
   plugins: [
     require('daisyui'),

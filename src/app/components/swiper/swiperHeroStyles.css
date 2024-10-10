@@ -1,0 +1,96 @@
+.myUniqueSwiper {
+  overflow: hidden;
+}
+
+.myUniqueSwiper .swiper-slide img {
+  transform: scale(1);
+  /* ตั้งค่าเริ่มต้นให้ transform เป็น scale(1) */
+}
+
+.myUniqueSwiper .swiper-slide-active img {
+  animation: zoomOut 5s ease-in-out forwards;
+  /* เพิ่ม keyframe animation สำหรับเอฟเฟกต์ซูม */
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.myUniqueSwiper .swiper-slide {
+  position: relative;
+  overflow: hidden;
+  /* Prevent content from spilling out */
+}
+
+.myUniqueSwiper .swiper-pagination {
+  position: absolute;
+  top: 78%;
+  /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  text-align: center;
+  z-index: 10;
+}
+
+.myUniqueSwiper .swiper-pagination-bullet {
+  background-color: #ffffff;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.myUniqueSwiper .swiper-pagination-bullet-active {
+  background-color: #ffffff;
+}
+
+.myUniqueSwiper .swiper-button-next,
+.myUniqueSwiper .swiper-button-prev {
+  color: gray;
+  /* Change the arrow color to gray */
+  width: 40px;
+  /* Adjust the width to make the arrow smaller */
+  height: 40px;
+  /* Adjust the height to make the arrow smaller */
+}
+
+.myUniqueSwiper .swiper-button-next::after,
+.myUniqueSwiper .swiper-button-prev::after {
+  font-size: 40px;
+  /* Adjust the font size to make the arrow icon smaller */
+}
+
+.myUniqueSwiper .swiper-button-next,
+.myUniqueSwiper .swiper-button-prev {
+  background-color: transparent;
+  /* Ensure the background is transparent */
+  border-radius: 50%;
+  /* Optionally, make the button circular */
+}
+
+.myUniqueSwiper .swiper-button-next:hover,
+.myUniqueSwiper .swiper-button-prev:hover {
+  color: darkgray;
+  /* Change color on hover for better visibility */
+}
+
+.myUniqueSwiper .swiper-slide img {
+  transition: transform 5s ease-in-out;
+  transform: scale(1.1);
+  /* Start slightly zoomed in */
+  width: 100%;
+  object-fit: cover;
+}
+
+.myUniqueSwiper .swiper-slide-active img {
+  transform: scale(1);
+  /* Zoom out to original size */
+}
