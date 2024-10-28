@@ -200,3 +200,27 @@ export async function getContact() {
 
     return data
 }
+
+export async function getPublicities() {
+    const res = await fetch('http://localhost:1337/api/blog-publicities?populate=*', { next: { revalidate: 30 } })
+    if (!res.ok) {
+        throw new Error('Failed to fetch related events')
+    }
+
+    const data = await res.json()
+
+    return data
+    
+}
+
+export async function getEvents() {
+    const res = await fetch('http://localhost:1337/api/blog-events?populate=*', { next: { revalidate: 30 } })
+    if (!res.ok) {
+        throw new Error('Failed to fetch related events')
+    }
+
+    const data = await res.json()
+
+    return data
+    
+}

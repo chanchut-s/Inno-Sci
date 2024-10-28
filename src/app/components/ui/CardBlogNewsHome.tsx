@@ -9,7 +9,7 @@ interface CardBlogNewsHomeProps {
     publishedAt: string;
     start: string;
     end?: string;  // เปลี่ยนเป็น optional
-    pageType: 'news' | 'event';
+    pageType: string
     slug: string;
 }
 
@@ -44,8 +44,8 @@ function CardBlogNewsHome({ id, title, thumbnailUrl, start, end, pageType, slug 
     return (
         <Link href={href}>
             <div className='group relative block'>
-                <div className="relative transform transition-transform group-hover:-translate-y-2 duration-500 flex flex-col md:flex-row gap-2 md:gap-6">
-                    <figure className="flex justify-center overflow-hidden flex-shrink-0 group-hover:shadow-gray-700 group-hover:shadow-md duration-1000 bg-gray-900 relative">
+                <div className="relative transform transition-transform group-hover:-translate-y-2 duration-500 flex flex-col gap-2 md:gap-6">
+                    <figure className="flex justify-center overflow-hidden flex-shrink-0 group-hover:shadow-gray-700 group-hover:shadow-md duration-1000 relative">
                         <div className="absolute top-2 left-2 z-20">
                             <div className="flex">
                                 {/* วันที่เริ่มต้น */}
@@ -67,7 +67,7 @@ function CardBlogNewsHome({ id, title, thumbnailUrl, start, end, pageType, slug 
                         <img
                             src={thumbnailUrl}
                             alt={title}
-                            className="h-[15rem] sm:h-[30rem] md:h-[9rem] w-[33rem] sm:w-[40rem] md:w-[14rem] object-scale-down duration-500 group-hover:scale-110"
+                            className="min-h-[10rem] object-scale-down duration-500 group-hover:scale-110"
                         />
                     </figure>
                     <div className='flex-grow p-4'>

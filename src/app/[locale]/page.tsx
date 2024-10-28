@@ -5,7 +5,8 @@ import SwiperProduct from "../components/swiper/SwiperProduct";
 import SwiperHero from "../components/swiper/SwiperHero";
 import SwiperPartner from "../components/swiper/SwiperPartner";
 import CardBlogNewsHome from "../components/ui/CardBlogNewsHome";
-import { getAboutUsHomeData, getServicesHomeData, getBlogData, getPartnerData, getHeroBannerData } from "../api/strapi";
+import { getAboutUsHomeData, getServicesHomeData, getBlogData, getPartnerData, getHeroBannerData, getPublicities, getEvents } from "../api/strapi";
+import SwiperNewsHome from "../components/swiper/SwiperNewsHome";
 
 export interface BlogNews {
   id: number;
@@ -48,11 +49,28 @@ export default async function Home({ params: { locale } }: { params: { locale: s
   const aboutUs = await getAboutUsHomeData();
   const services = await getServicesHomeData()
   const partner = await getPartnerData()
-  const events = blogData.data.attributes.blog_events.data;
-  const publicities = blogData.data.attributes.blog_publicities.data;
+  // const events = blogData.data.attributes.blog_events.data;
+  const publicities = await getPublicities()
+  const events = await getEvents()
+  // const publicities = blogData.data.attributes.blog_publicities.data;
   const showbanner = herobanner.data.attributes.hero_banners.data || []
-  const showpartner =  partner.data.attributes.blog_partners.data
-  
+  const showpartner = partner.data.attributes.blog_partners.data
+
+
+  const today = new Date();
+
+  const sortedPublicities = publicities.data
+    .filter((publicity: BlogNews) => new Date(publicity.attributes.start) <= today)
+    .sort((a: BlogNews, b: BlogNews) =>
+      new Date(b.attributes.start).getTime() - new Date(a.attributes.start).getTime()
+    );
+
+  const sortedEvents = events.data
+    .filter((events: BlogNews) => new Date(events.attributes.start) <= today)
+    .sort((a: BlogNews, b: BlogNews) =>
+      new Date(b.attributes.start).getTime() - new Date(a.attributes.start).getTime()
+    );
+
   return (
     <div className="bg-gray-100">
       <div className="relative z-0">
@@ -63,6 +81,27 @@ export default async function Home({ params: { locale } }: { params: { locale: s
       </div>
       <div className="flex justify-center items-center mx-3 sm:mx-10 lg:mx-[4rem] -mt-[2rem] md:-mt-[4rem] pb-5">
         <div className='bg-white relative p-[1rem] md:p-[2rem] shadow-xl w-full max-w-screen-xl'>
+
+          <h1 className="text-2xl sm:text-4xl text-blue-900 font-bold text-center pt-[2rem]">{t('ourServices')}</h1>
+          <div className="md:mt-5">
+            <SwiperProduct servives={services} />
+          </div>
+
+          <div className="flex-col">
+            <div className="flex justify-between items-center">
+              <h1 className="text-2xl sm:text-4xl font-bold text-blue-900">{t('news')}</h1>
+              <a href={`/${locale}/news`}><button className="btn bg-orange-600 text-white text-xs px-1.5 py-0.5 font-normal hover:text-gray-900">{t('viewAll')}</button></a>
+            </div>
+            <SwiperNewsHome news={sortedPublicities} pageType="news" />
+          </div>
+          <div className="flex-col">
+            <div className="flex justify-between items-center">
+              <h1 className="text-2xl sm:text-4xl font-bold text-blue-900">{t('events')}</h1>
+              <a href={`/${locale}/event/upcoming-events`}><button className="btn bg-orange-600 text-white text-xs px-1.5 py-0.5 font-normal hover:text-gray-900">{t('viewAll')}</button></a>
+            </div>
+            <SwiperNewsHome news={sortedEvents} pageType="event" />
+          </div>
+
           <h1 className="text-2xl sm:text-4xl text-blue-900 font-bold text-center pt-[1rem] ">{t('aboutInno')}</h1>
           <div className="mt-5 sm:mt-8 grid grid-cols-1 md:grid-cols-3">
             {aboutUs.slice(0, 3).map((about: AboutUs) => (
@@ -75,54 +114,6 @@ export default async function Home({ params: { locale } }: { params: { locale: s
               />
             ))}
           </div>
-          <h1 className="text-2xl sm:text-4xl text-blue-900 font-bold text-center pt-[2rem]">{t('ourServices')}</h1>
-          <div className="md:mt-5">
-            <SwiperProduct servives={services}/>
-          </div>
-
-          <div className="grid grid-cols-1 md-custom:grid-cols-2 gap-7 pt-4">
-            <div className="flex-col">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl sm:text-4xl font-bold text-blue-900">{t('news')}</h1>
-                <a href={`/${locale}/news`}><button className="btn bg-orange-600 text-white text-xs px-1.5 py-0.5 font-normal hover:text-gray-900">{t('viewAll')}</button></a>
-              </div>
-              <div className="mt-4 grid grid-cols-1 gap-7">
-                {publicities.slice(0, 3).map((publicitie: BlogNews) => (
-                  <CardBlogNewsHome
-                    key={publicitie.id}
-                    id={publicitie.id}
-                    publishedAt={publicitie.attributes.publishedAt}
-                    title={publicitie.attributes.title}
-                    start={publicitie.attributes.start}
-                    thumbnailUrl={`http://localhost:1337${publicitie.attributes.thumbnail.data.attributes.url}`}
-                    pageType="news"
-                    slug={publicitie.attributes.slug}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex-col">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl sm:text-4xl font-bold text-blue-900">{t('events')}</h1>
-                <a href={`/${locale}/event/upcoming-events`}><button className="btn bg-orange-600 text-white text-xs px-1.5 py-0.5 font-normal hover:text-gray-900">{t('viewAll')}</button></a>
-              </div>
-              <div className="mt-4 grid grid-cols-1 gap-7">
-                {events.slice(0, 3).map((event: BlogNews) => (
-                  <CardBlogNewsHome
-                    key={event.id}
-                    id={event.id}
-                    publishedAt={event.attributes.publishedAt}
-                    title={event.attributes.title}
-                    start={event.attributes.start}
-                    end={event.attributes.end}
-                    thumbnailUrl={`http://localhost:1337${event.attributes.thumbnail.data.attributes.url}`}
-                    pageType="event"
-                    slug={event.attributes.slug}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
 
           <div className="flex-col pt-5">
             <div className="flex justify-between items-center">
@@ -130,7 +121,7 @@ export default async function Home({ params: { locale } }: { params: { locale: s
               <a href={`/${locale}/partner-link`}><button className="btn bg-orange-600 text-white text-xs px-1.5 py-0.5 font-normal hover:text-gray-900">{t('viewAll')}</button></a>
             </div>
             <div className="">
-              <SwiperPartner partners={showpartner}/>
+              <SwiperPartner partners={showpartner} />
             </div>
           </div>
         </div>
