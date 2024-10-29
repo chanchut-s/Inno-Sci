@@ -46,7 +46,7 @@ const CardBlogNews: React.FC<CardBlogNewsProps> = ({ id, title, thumbnailUrl, st
       <div className='group relative block'>
         <div className="relative transform transition-transform group-hover:-translate-y-2 duration-500 flex flex-col">
           {/* รูปภาพและวันที่ */}
-          <figure className="flex justify-center overflow-hidden flex-shrink-0 group-hover:shadow-gray-700 group-hover:shadow-md duration-1000 bg-gray-900 relative">
+          <figure className="flex justify-center overflow-hidden flex-shrink-0 group-hover:shadow-gray-700 group-hover:shadow-md duration-1000 relative">
             {/* กรอบแสดงวันที่ */}
             <div className="absolute top-2 left-2 z-20">
               <div className="flex">
