@@ -57,6 +57,7 @@ export default function SwiperNewHone({ news, pageType }: News) {
                             start={news.attributes.start}
                             thumbnailUrl={`http://localhost:1337${news.attributes.thumbnail.data?.attributes?.url}`}
                             pageType={pageType}
+                            end={news.attributes.end}
                             slug={news.attributes.slug}
                         />
                     </SwiperSlide>

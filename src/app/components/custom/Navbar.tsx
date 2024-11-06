@@ -128,64 +128,134 @@ function Navbar({ menu, logo }: { menu: MenuData, logo: LogoData }) {
             </div>
             <div className="navbar-center hidden lg:flex">
                 <div className="menu menu-horizontal px-1">
-                    <a role="button" className="btn btn-ghost font-normal" href={`/${locale}`}>{t("home")}</a>
+                    <a role="button" className="btn btn-ghost font-normal hover:bg-gray-50" href={`/${locale}`}>{t("home")}</a>
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost font-normal">{t("about")}</div>
-                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 mt-5 shadow">
-                            <li>
-                                <details className="dropdown">
-                                    <summary>{t("personnel")}</summary>
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost font-normal hover:bg-gray-50"
+                        >
+                            {t("about")}
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-52 p-2 mt-2 shadow-lg"
+                        >
+                            <li className="group">
+                                <details className="dropdown w-full">
+                                    <summary className="hover:bg-gray-50 rounded-lg">
+                                        {t("personnel")}
+                                    </summary>
                                     <ul className="p-2">
                                         {personnel.map((data: any) => (
-                                            <li key={data.id}><a href={`/${locale}/personnel/${data.attributes.slug}`}>{getTextForLocale(data)}</a></li>
+                                            <li key={data.id}>
+                                                <a
+                                                    href={`/${locale}/personnel/${data.attributes.slug}`}
+                                                    className="hover:bg-gray-50"
+                                                >
+                                                    {getTextForLocale(data)}
+                                                </a>
+                                            </li>
                                         ))}
                                     </ul>
                                 </details>
                             </li>
                             {aboutUs.map((data: any) => (
-                                <li key={data.id}><a href={`/${locale}/about-us/${data.attributes.slug}`}>{getTextForLocale(data)}</a></li>
+                                <li key={data.id}>
+                                    <a
+                                        href={`/${locale}/about-us/${data.attributes.slug}`}
+                                        className="hover:bg-gray-50"
+                                    >
+                                        {getTextForLocale(data)}
+                                    </a>
+                                </li>
                             ))}
                         </ul>
-
                     </div>
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost font-normal">{t("news")}</div>
-                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-auto p-2 mt-5 shadow ">
-                            <li>
-                                <details className="dropdown  w-[200px]">
-                                    <summary>{t("event")}</summary>
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost font-normal hover:bg-gray-50"
+                        >
+                            {t("news")}
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-auto p-2 mt-2 shadow-lg"
+                        >
+                            <li className="group">
+                                <details className="dropdown w-[200px]">
+                                    <summary className="hover:bg-gray-50 rounded-lg">
+                                        {t("event")}
+                                    </summary>
                                     <ul className="p-2">
-                                        <li><a href={`/${locale}/event/upcoming-events`}>{t('upevent')}</a></li>
-                                        <li><a href={`/${locale}/event/pass-events`}>{t('passevent')}</a></li>
+                                        <li>
+                                            <a
+                                                href={`/${locale}/event/upcoming-events`}
+                                                className="hover:bg-gray-50"
+                                            >
+                                                {t('upevent')}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href={`/${locale}/event/pass-events`}
+                                                className="hover:bg-gray-50"
+                                            >
+                                                {t('passevent')}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </details>
                             </li>
-                            <li><a href={`/${locale}/news`}>{t("news1")}</a></li>
+                            <li>
+                                <a
+                                    href={`/${locale}/news`}
+                                    className="hover:bg-gray-50"
+                                >
+                                    {t("news1")}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost font-normal">{t("service")}</div>
-                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-auto p-2 mt-5 shadow">
-                            {services.map((service: any) => (
-                                <li key={service.id}>
-                                    <details className="dropdown w-[200px]">
-                                        <summary>{locale === 'th' ? service.attributes.text_th : service.attributes.text}</summary>
-                                        <ul className="p-2">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost font-normal hover:bg-gray-50"
+                        >
+                            {t("service")}
+                        </div>
+                        <div
+                            tabIndex={0}
+                            className="dropdown-content bg-white rounded-lg z-[1] shadow-lg mt-2 fixed left-1/2 -translate-x-1/2 w-[80vw] max-w-4xl"
+                        >
+                            <div className="grid grid-cols-4 gap-1 p-4">
+                                {services.map((service) => (
+                                    <div key={service.id} className="min-w-[200px]">
+                                        <div className="px-4 py-2 font-medium text-gray-700 border-b">
+                                            {locale === 'th' ? service.attributes.text_th : service.attributes.text}
+                                        </div>
+                                        <ul className="py-2">
                                             {service.attributes.title.map((title: any) => (
                                                 <li key={title.id}>
-                                                    <a href={`/${locale}/services/${service.attributes.slug}/${title.id}`}>
+                                                    <a
+                                                        href={`/${locale}/services/${service.attributes.slug}/${title.id}`}
+                                                        className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                                    >
                                                         {locale === 'th' ? title.text_th : title.text}
                                                     </a>
                                                 </li>
                                             ))}
                                         </ul>
-                                    </details>
-                                </li>
-                            ))}
-                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
-                    <a role="button" className="btn btn-ghost font-normal" href={`/${locale}/contact`}>{t("contact")}</a>
+                    <a role="button" className="btn btn-ghost font-normal hover:bg-gray-50" href={`/${locale}/contact`}>{t("contact")}</a>
                 </div>
             </div>
             <div className="navbar-end">
